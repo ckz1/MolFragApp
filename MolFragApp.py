@@ -315,5 +315,11 @@ with col2:
         
         show_mol(xyzfile,width=850,height=350)
         
-        
-    
+
+components.html('''
+<p align='center'>
+<a href="https://github.com/ckz1/MolFragApp" target="_blank">
+<img border="0" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="MolFragApp in Github" width="30">
+</a>
+</p>
+''')
