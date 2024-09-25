@@ -6,30 +6,16 @@ import streamlit as st
 import streamlit.components.v1 as components
 from glob import glob
 
+st.set_page_config(layout='wide')
+
 
 def parse_coord(coord_str_list: list):
-    """将`element coord_x coord_y coord_z`的文本转换为一帧的原子坐标数组
-
-    Args:
-        coord_str_list (list): 包含元素和原子坐标的字符串数组
-
-    Returns:
-        NDarray: 原子坐标数组(一帧)
-    """
     coord_arr = np.array([row.split()[1:] for row in coord_str_list],
                          dtype='float64')
     return coord_arr
 
 
 def read_xyz(xyzfile):
-    """读取多帧xyz文件，输出原子坐标数组
-
-    Args:
-        xyzfile (str): xyz文件路径
-
-    Returns:
-        NDarray: 原子坐标数组
-    """
     with open(xyzfile, 'r') as f:
         lines = f.readlines()
     f.close()
@@ -42,14 +28,6 @@ def read_xyz(xyzfile):
 
 
 def gen_chemical_formula(atom_list: list = ['H', 'H', 'O']):
-    """将原子列表转化为化学式
-
-    Args:
-        atom_list (list, optional): 原子列表. Defaults to ['H', 'H', 'O'], i.e. H2O.
-
-    Returns:
-        str: 化学式
-    """
     ele = []
     num = []
 
@@ -68,16 +46,6 @@ def gen_chemical_formula(atom_list: list = ['H', 'H', 'O']):
 
 
 class XYZ:
-    """传入xyz文件路径初始化
-
-    Attribute:
-        read_xyz : 读取坐标
-        get_frag : 碎片分析
-        get_formula : 将碎片结果转换为化学式
-
-    Note:
-        碎片分析结果包含原子的元素名以及索引,还有更多信息可以挖掘
-    """
 
     def __init__(self, xyzfile) -> None:
         self.xyzfile = xyzfile
@@ -122,20 +90,19 @@ class XYZ:
             self.frag[idx_frag]['formula'] = gen_chemical_formula(
                 self.frag[idx_frag]['atom'])
 
-
 @st.cache_data
 def main(xyz_path, max_bond_length: float = 2.5, min_atom_num: int = 1):
     xyzfiles = sorted(glob(xyz_path))
     steps = []
     frags = []
-
+    
     # st.write(max_bond_length,min_atom_num)
-
+    
     progress_text = "Operation in progress. Please wait."
     my_bar = st.progress(0, text=progress_text)
     counter = 0
     num_xyzfile = len(xyzfiles)
-
+    
     for xyzfile in xyzfiles:
         xyz = XYZ(xyzfile)
         xyz.read_xyz()
@@ -151,17 +118,15 @@ def main(xyz_path, max_bond_length: float = 2.5, min_atom_num: int = 1):
             frags.append(temp)
 
         except KeyError:
-            print(
-                f'max_bond_length and min_atom_num of {xyzfile} are inappropriate'
-            )
+            print(f'max_bond_length and min_atom_num of {xyzfile} are inappropriate')
             # st.warning(f'max_bond_length and min_atom_num of {xyzfile} are inappropriate')
             frags.append([None])
-
+            
         counter += 1
-        my_bar.progress(counter / num_xyzfile, text=progress_text)
-
+        my_bar.progress(counter/num_xyzfile, text=progress_text)
+    
     my_bar.empty()
-
+    
     # st.write(frags)
 
     return xyzfiles, steps, frags
@@ -169,32 +134,38 @@ def main(xyz_path, max_bond_length: float = 2.5, min_atom_num: int = 1):
 
 st.title('分子解离片段分析')
 
+
 xyz_path = st.text_input(
     f"当前路径:`{os.getcwd()}`, 轨迹文件(`xyz`格式)路径:",
-    value="Singlet_*/TRAJ_*/output.xyz",
-    help='使用`xyz`文件最后一帧的结构分析解离片段的成分',
+    value = "Singlet_*/TRAJ_*/output.xyz",
+    help = '使用`xyz`文件最后一帧的结构分析解离片段的成分',
 )
 num_xyzfile = len(glob(xyz_path))
 st.write("轨迹文件总数：", num_xyzfile)
 
 if num_xyzfile == 0:
     st.warning('No xyz file found!', icon="⚠️")
-
+    
+    
 # st.write('**片段划分参数设置:**')
 
-max_bond_length = st.number_input(
-    "划分片段时的最大键长(Å)",
-    value=2.5,
-    min_value=0.1,
-    help='若两原子之间距离大于最大键长，则被划分到不同片段',
-)
+para1, para2 = st.columns(2)
 
-min_atom_num = st.number_input(
-    "每个片段中原子数的下限",
-    value=1,
-    min_value=1,
-    help='取值为1表示划分后的每个片段中至少包含1个原子，即允许存在由单个原子构成的片段',
-)
+
+with para1:
+    max_bond_length = st.number_input(
+        "划分片段时的最大键长(Å)",
+        value=2.5,min_value=0.1,
+        help='若两原子之间距离大于最大键长，则被划分到不同片段',
+    )
+
+with para2:
+    min_atom_num = st.number_input(
+        "每个片段中原子数的下限",
+        value=1, min_value = 1,
+        help='取值为1表示划分后的每个片段中至少包含1个原子，即允许存在由单个原子构成的片段',
+    )
+
 
 # st.divider()
 
@@ -223,17 +194,15 @@ st.markdown('可按照某列的值进行排序、搜索；选中某一行观看�
 # st.dataframe(pd.DataFrame(data), width=800, height=800)
 
 st.session_state.df = pd.DataFrame(data)
-
-event = st.dataframe(
-    st.session_state.df,
-    width=800,
-    key="data",
-    hide_index=True,
-    on_select="rerun",
-    selection_mode="single-row",
-)
-
-# st.markdown('没有碎片结果说明最少原子数设置不合适')
+    
+# event = st.dataframe(
+    # st.session_state.df,
+    # width=800,
+    # key="data",
+    # hide_index = True,
+    # on_select="rerun",
+    # selection_mode="single-row",
+# )
 
 # event.selection
 
@@ -241,42 +210,110 @@ event = st.dataframe(
 # st.session_state.df.iloc[idx_row]['xyz']
 
 
-def show_mol(xyzfile, width: int = 400, height: int = 400):
-    """通过py3dmol显示轨迹动画，并将其嵌入到html
 
-    Args:
-        xyzfile (_type_): _description_
-        width (int, optional): _description_. Defaults to 400.
-        height (int, optional): _description_. Defaults to 400.
-    """
-    with open(xyzfile, 'r') as f:
+# def show_mol(xyzfile,width:int=400,height:int=400):
+    # with open(xyzfile,'r') as f:
+        # mol_block = f.read()
+    # f.close()
+    
+    # viewer = py3Dmol.view(width=400, height=400)
+    # viewer.addModelsAsFrames(mol_block, 'xyz')
+    # viewer.setStyle({'stick': {'radius': 0.1,'colorscheme':'Jmol'}, 'sphere': {'radius': 0.3,'colorscheme':'Jmol'}})
+    # viewer.setBackgroundColor('black')
+    # viewer.animate({'loop': 'forward',})
+    # viewer.zoomTo()
+    
+    # components.html(
+        # viewer._make_html(),
+        # width=width,
+        # height=height
+        # )
+        
+# def show_mol(xyzfile,width:int=400,height:int=400):
+def show_mol(xyzfile,width:int=400,height:int=400,show_mol=True,show_energy=True):
+    with open(xyzfile,'r') as f:
         mol_block = f.read()
     f.close()
-    viewer = py3Dmol.view(width=800, height=400)
-    viewer.addModelsAsFrames(mol_block, 'xyz')
-    viewer.setStyle({
-        'stick': {
-            'radius': 0.1,
-            'colorscheme': 'Jmol'
-        },
-        'sphere': {
-            'radius': 0.3,
-            'colorscheme': 'Jmol'
-        }
-    })
-    viewer.setBackgroundColor('black')
-    viewer.animate({
-        'loop': 'forward',
-    })
-    viewer.zoomTo()
+    
+    col1, col2 = st.columns(2)
+    
+    # with col1:
+    if show_mol:
+        viewer = py3Dmol.view(width=width, height=height)
+        viewer.addModelsAsFrames(mol_block, 'xyz')
+        viewer.setStyle({'stick': {'radius': 0.1,'colorscheme':'Jmol'}, 'sphere': {'radius': 0.3,'colorscheme':'Jmol'}})
+        viewer.setBackgroundColor('black')
+        viewer.animate({'loop': 'forward',})
+        viewer.zoomTo()
+        
+        components.html(
+            viewer._make_html(),
+            width=width,
+            height=height
+            )
+        
+        # st.write('缩放: 滚动鼠标滑轮, 旋转: 拖动鼠标左键, 平移: 拖动鼠标滑轮')
+            
+    # with col2:
+    if show_energy:
+        res = os.system(f"cd {os.path.dirname(xyzfile)}; $SHARC/data_extractor.x output.dat; ")
+    
+        if res == 0:
+            # st.write(os.path.dirname(xyzfile))
+            with open(f"{os.path.dirname(xyzfile)}/output_data/expec.out",'r') as f:
+                f.readline()
+                title_row = f.readline()
+            f.close()
+            names=[col_header.strip() for col_header in title_row[1:].split('|')[:-1]]
+            
+            data = pd.read_csv(f"{os.path.dirname(xyzfile)}/output_data/expec.out",delimiter='\s+',skiprows=3,names=names)
+            
+            data_plot = pd.DataFrame(
+                {
+                    "Time": data.iloc[:,0],
+                    "State1": data.iloc[:,4],
+                    "State2": data.iloc[:,5],
+                    "State3": data.iloc[:,6],
+                    "State4": data.iloc[:,7],
+                    "Trajectory": data.iloc[:,2],
+                }
+            )
+            
+            st.line_chart(data_plot,x="Time",y=["State1","State2","State3","State4","Trajectory"],x_label = 'Time [fs]',y_label= 'Energy [eV]',height=350,width=800)
+            
+            # st.write(data_plot)
 
-    components.html(viewer._make_html(), width=width, height=height)
 
+# if len(event.selection["rows"]) != 0:
+    # idx_row = event.selection["rows"][0]
+    # xyzfile = st.session_state.df.iloc[idx_row]['xyz']
+    
+    # show_mol(xyzfile,700)
+    
+    # st.write('缩放: 滚动鼠标滑轮, 旋转: 拖动鼠标左键, 平移: 拖动鼠标滑轮')
+    
+    
+col1, col2 = st.columns(2)
 
-if len(event.selection["rows"]) != 0:
-    idx_row = event.selection["rows"][0]
-    xyzfile = st.session_state.df.iloc[idx_row]['xyz']
-
-    show_mol(xyzfile, 700)
-
+with col1:
+    event = st.dataframe(
+        st.session_state.df,
+        height=700,
+        width=800,
+        key="data",
+        hide_index = True,
+        on_select="rerun",
+        selection_mode="single-row",
+    )
+    
     st.write('缩放: 滚动鼠标滑轮, 旋转: 拖动鼠标左键, 平移: 拖动鼠标滑轮')
+    
+with col2:
+    if len(event.selection["rows"]) != 0:
+        idx_row = event.selection["rows"][0]
+        xyzfile = st.session_state.df.iloc[idx_row]['xyz']
+        
+        show_mol(xyzfile,width=850,height=350)
+        
+        
+    
