@@ -1,4 +1,14 @@
+
+'''
+version: 2024-10-21  Feat : Filter of Multiplicity.
+version: 2024-10-16  Feat : Statistics on fragmentation information
+version: 2024-10-10  Fix : find and read template file
+'''
+
+VERSION = '2024.10.21'
+
 import os
+import json
 import numpy as np
 import py3Dmol
 import pandas as pd
@@ -6,9 +16,11 @@ import streamlit as st
 import streamlit.components.v1 as components
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
 from glob import glob
 
-st.set_page_config(layout='wide')
+st.set_page_config(page_title='MolFragApp', layout='wide')
 
 def read_template(filename='MOLCAS.template', output_type='str'):
     assert os.path.exists(filename)
@@ -23,7 +35,7 @@ def read_template(filename='MOLCAS.template', output_type='str'):
     template = {'qc_software': qc_software}
     for line in lines:
         temp = line.split()
-        if len(temp) == 2:
+        if len(temp) >= 2 and '#' not in line:
             template[temp[0]] = temp[1]
 
     if output_type == 'str':
@@ -220,7 +232,15 @@ def frag_analysis(xyz_path, max_bond_length: float = 2.5, min_atom_num: int = 1)
             temp = []
             for idx_frag in xyz.frag:
                 temp.append(xyz.frag[idx_frag]['formula'])
+                
+            # frags.append(sorted(temp))
+            for i in range(1,len(temp)):
+                for j in range(0,len(temp)-i):
+                    if len(temp[j]) < len(temp[j+1]) :
+                        temp[j] , temp[j+1] = temp[j+1] , temp[j]
+                        
             frags.append(temp)
+
             
             xyzs.append(xyzfile)
             steps.append(len(xyz.coords))
@@ -252,7 +272,9 @@ def frag_analysis(xyz_path, max_bond_length: float = 2.5, min_atom_num: int = 1)
     return xyzs, steps, frags, delta_kin
 
 
-st.title(f'分子解离片段分析(当前路径:`{os.getcwd()}`)')
+st.title(f'分子解离片段分析 v{VERSION}')
+
+st.write(f'当前路径:`{os.getcwd()}`')
 
 path1, path2 = st.columns(2)
 
@@ -271,9 +293,14 @@ if num_xyzfile == 0:
 with path2:
     template_path = st.text_input(
         "`template`文件路径:",
-        value = "MOLCAS.template",
+        value = "*.template",
     )
-    st.write(f"计算级别:`{read_template(template_path)}`")
+    try:
+        cal_method = read_template(glob(template_path)[0])
+    except:
+        cal_method = f"Warning: Can NOT read template from {template_path}!"
+        
+    st.write(f"计算级别:`{cal_method}`")
 
 # st.write('**片段划分参数设置:**')
 
@@ -307,6 +334,11 @@ max_num_frag = max(num_frag)
 
 # st.write(delta_kin)
 # st.write(np.array(delta_kin))
+
+# # np.save('frag.npy',(steps,num_frag,frags))
+# with open('frag.json','w') as f:
+    # json.dump(dict(steps=steps,nfrag=num_frag,frags=frags),f)
+# f.close()
 
 data = {
     "plot": [False]*len(xyzs),
@@ -357,9 +389,167 @@ with col1:
 
 
 with col2:
-    tab1, tab2 = st.tabs(["轨迹动画&能量曲线", "能量差直方图"])
+    tab1, tab2, tab3, tab4 = st.tabs(["原始轨迹筛选与统计","轨迹动画&能量曲线", "能量差直方图", "查看其它文件"])
 
     with tab1:
+        frags_info = dict(filepath=xyzs, steps=steps,nfrag=num_frag,frags=frags)
+        
+        frags_type = []
+        frags_num = []
+
+        para1_filter, para2_filter, para3_filter = st.columns(3)
+        
+        with para1_filter:
+            min_steps = st.number_input(
+            "轨迹的最小步数",
+            value=1000,min_value=1,
+        )
+        
+        with para2_filter:
+            min_nfrag = st.number_input(
+            "片段数目最小值",
+            value=2,min_value=1,max_value=max(frags_info['nfrag'])-1
+        )
+        
+        with para3_filter:
+            max_nfrag = st.number_input(
+            "片段数目最大值",
+            value=3,min_value=2,max_value=max(frags_info['nfrag'])
+        )
+        
+        all_multiplicity = []
+        for file_path in frags_info['filepath']:
+            multi = file_path.split('/')[0]
+            if multi not in all_multiplicity:
+                all_multiplicity.append(multi)                
+            
+        
+        multiplicity = st.multiselect(
+                label = '轨迹的初始多重度',
+                options = all_multiplicity,
+                default = all_multiplicity,
+            )
+        
+        # frag_chosen = st.text_input(
+        # "是否包含片段",
+        # )
+        
+        multiplicity_filtered = []
+        for i in range(len(frags_info['steps'])):
+            # 根据设定的条件筛选轨迹
+            multi_temp = frags_info['filepath'][i].split('/')[0]
+            if frags_info['steps'][i] >= min_steps and min_nfrag <= frags_info['nfrag'][i] <= max_nfrag and multi_temp in multiplicity: 
+                multiplicity_filtered.append(multi_temp)
+                frags_filter = frags_info['frags'][i]
+                if frags_filter in frags_type:
+                    idx = frags_type.index(frags_filter)
+                    frags_num[idx] += 1
+                else:
+                    frags_type.append(frags_filter)
+                    frags_num.append(1)
+        
+        # frags_type,frags_num,sum(frags_num)
+        # 降序排序
+        for i in range(1,len(frags_num)):
+            for j in range(0,len(frags_num)-i):
+                if frags_num[j] < frags_num[j+1]:
+                    frags_num[j], frags_num[j+1] = frags_num[j+1], frags_num[j]
+                    frags_type[j], frags_type[j+1] = frags_type[j+1], frags_type[j]
+                    
+        multiplicity_filtered_info = {'type':[],'num':[]}
+        for mf in multiplicity_filtered:
+            if mf not in multiplicity_filtered_info['type']:
+                multiplicity_filtered_info['type'].append(mf)
+                multiplicity_filtered_info['num'].append(1)
+            else:
+                idx_mf = multiplicity_filtered_info['type'].index(mf)
+                multiplicity_filtered_info['num'][idx_mf] += 1
+
+        for m in range(1,len(multiplicity_filtered_info['num'])):
+            for n in range(0,len(multiplicity_filtered_info['num'])-m):
+                if multiplicity_filtered_info['num'][n] < multiplicity_filtered_info['num'][n+1]:
+                    multiplicity_filtered_info['num'][n], multiplicity_filtered_info['num'][n+1] = multiplicity_filtered_info['num'][n+1], multiplicity_filtered_info['num'][n]
+                    multiplicity_filtered_info['type'][n], multiplicity_filtered_info['type'][n+1] = multiplicity_filtered_info['type'][n+1], multiplicity_filtered_info['type'][n]
+
+        # st.write(multiplicity_filtered_info)
+
+        multiplicity_filtered_info_strlist = [f"{multiplicity_filtered_info['num'][i]} {multiplicity_filtered_info['type'][i]}" for i in range(len(multiplicity_filtered_info['num']))]
+        # st.write(multiplicity_filtered_info_string)
+        st.write(f"{sum(frags_num)}条轨迹({', '.join(multiplicity_filtered_info_strlist)}), {len(frags_type)}种解离路径 ")
+
+        fig = px.bar(dict(frags_type=[" + ".join(f) for f in frags_type],frags_num=frags_num), x='frags_type',y='frags_num')
+        fig.update_layout(xaxis=dict(title='片段类型'),yaxis=dict(title='片段数目'))
+        st.plotly_chart(fig, use_container_width=True)
+        
+        
+        df_pie = pd.DataFrame(
+            {
+                "frags_type" : [" + ".join(f) for f in frags_type],
+                "frags_num" : frags_num,
+                "H" : [("H" if "H" in f else "No H") for f in frags_type],
+                "H2" : [("H2" if "H2" in f else "No H2") for f in frags_type],
+                "H channel" : [("H channel" if "H2" in f or "H" in f else "No H channel") for f in frags_type],
+            }
+        )
+        fig = px.sunburst(df_pie, path=['H2', 'H', 'frags_type'], values='frags_num',color_discrete_sequence=['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A', '#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB52'])
+        # fig = px.sunburst(
+            # df_pie, 
+            # path=['H channel', 'H2', 'frags_type'], 
+            # values='frags_num',
+            # color = 'frags_num',
+            # # color_discrete_map={'(?)':'black', 'Lunch':'gold', 'Dinner':'darkblue'},
+        # )
+        st.plotly_chart(fig, use_container_width=True)
+        
+        
+
+        frag_chosen1 = st.text_input('是否包含片段(1/3)',value=None)
+        if frag_chosen1 is not None:
+            frag_chosen1 = frag_chosen1.strip()
+            df_pie[frag_chosen1] = [(frag_chosen1 if frag_chosen1 in f else "Other") for f in frags_type]
+            
+            fig1 = px.pie(df_pie,values='frags_num',names=frag_chosen1)
+            
+            st.plotly_chart(fig1, use_container_width=True)
+            
+        frag_chosen2 = st.text_input('⋙ 是否包含片段(2/3)',value=None)
+        if frag_chosen2 is not None:
+            frag_chosen2 = frag_chosen2.strip()
+            df_pie[frag_chosen2] = [(frag_chosen2 if frag_chosen2 in f else "Other") for f in frags_type]
+            
+            option1 = st.radio(
+                label = '选择片段(1/3)',
+                options = [frag_chosen1,'Other'],
+                horizontal = True,
+                )
+                
+            df_pie2 = df_pie[ df_pie[frag_chosen1] == option1 ]
+            
+            fig2 = px.pie(df_pie2,values='frags_num',names=frag_chosen2,title=f"{frag_chosen1} = {option1}")
+            
+            st.plotly_chart(fig2, use_container_width=True)
+            
+        frag_chosen3 = st.text_input('⋙⋙ 是否包含片段(3/3)',value=None)
+        if frag_chosen3 is not None:
+            frag_chosen3 = frag_chosen3.strip()
+            df_pie[frag_chosen3] = [(frag_chosen3 if frag_chosen3 in f else "Other") for f in frags_type]
+            
+            option2 = st.radio(
+                label = '选择片段(2/3)',
+                options = [frag_chosen2,'Other'],
+                horizontal = True,
+                )
+                
+            df_pie3 = df_pie[ df_pie[frag_chosen1] == option1 ]
+            df_pie3 = df_pie3[ df_pie3[frag_chosen2] == option2 ]
+            
+            fig3 = px.pie(df_pie3,values='frags_num',names=frag_chosen3,title=f"{frag_chosen1} = {option1} / {frag_chosen2} = {option2}")
+            
+            st.plotly_chart(fig3, use_container_width=True)
+                
+            
+
+    with tab2:
         xyzfiles_selected = edited_df[edited_df['plot']==True]['xyz']
         num_xyzfiles_selected = len(xyzfiles_selected)
         xyzfile_display = None
@@ -377,9 +567,8 @@ with col2:
 
         if xyzfile_display is not None:
             show_mol(xyzfile_display,width=850,height=350)
-
-
-    with tab2:
+            
+    with tab3:
         # st.write(edited_df)
         delta_kin_shifted = edited_df[edited_df['delta_kin_distribution']==True]['delta_kin_shifted']
         if len(delta_kin_shifted) > 1:
@@ -400,10 +589,41 @@ with col2:
                 )
         else:
             st.info("未选择轨迹或选择轨迹数不足")
+            
+    with tab4:
+        xyz_path_selected = edited_df[edited_df['plot']==True]['xyz']
+        num_xyz_path_selected = len(xyz_path_selected)
+        xyz_path_display = None
+        if num_xyz_path_selected == 0:
+            st.info("未选择轨迹")
+        elif num_xyz_path_selected > 1:
+            xyz_path_display = st.radio(
+                label = '选择一个轨迹查看统一路径下的其它文件',
+                options = xyz_path_selected,
+                horizontal = True,
+            )
+            xyz_path_display = xyz_path_display
+        else:
+            xyz_path_display = xyz_path_selected.iloc[0]
+        
+        if xyz_path_display is not None:
+            file_type_display = st.text_input('文件名:',value='input')
+            path_temp = os.path.dirname(xyz_path_display)+f"/{file_type_display}"
+            if os.path.exists(path_temp):
+                suffix = file_type_display.split('.')[-1]
+                if suffix in ['jpg','png']:
+                    st.image(path_temp)
+                else:
+                    with open(path_temp,'r') as f:
+                        content = f.read()
+                    f.close()
+                    
+                    st.text(content)
+            else:
+                st.warning(f'文件{path_temp}不存在!')
 
 
-        
-        
+st.divider()
 components.html('''
 <p align='center'>
 <a href="https://github.com/ckz1/MolFragApp" target="_blank">
