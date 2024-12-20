@@ -67,5 +67,5 @@ nohup streamlit run MolFragApp.py > MolFragApp.log 2>&1 &
 2. Unzip the demo.zip file, which contains several trajectory files: [Doublet_0/TRAJ_00004](Doublet_0/TRAJ_00004) and [Doublet_2/TRAJ_00012](Doublet_2/TRAJ_00012)
 3. [Run](#run)
 4. Modify parameters:
-   - Change the trajectory file (`xyz` format) path to: `Singlet_*/TRAJ_*/output.xyz`
+   - Change the trajectory file (`xyz` format) path to: `*let_*/TRAJ_*/output.xyz`
    - ~~Change the `template` file path to: `MOLCAS.template`~~

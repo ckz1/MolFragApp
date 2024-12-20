@@ -44,7 +44,7 @@ MolFragApp is a project based on Python language that uses molecular structure f
 conda create --name molfrag python=3.11
 conda activate molfrag
 
-git clone 
+git clone https://github.com/ckz1/MolFragApp.git
 
 # pip freeze > requirements.txt
 # 安装依赖
@@ -66,8 +66,8 @@ nohup streamlit run MolFragApp.py > MolFragApp.log 2>&1 &
 ### demo
 
 1. [安装](#install)
-2. 解压 `demo.zip` 文件，其中包含若干轨迹文件
+2. 解压 `demo.zip` 文件，其中包含若干轨迹文件: [Doublet_0/TRAJ_00004](Doublet_0/TRAJ_00004) and [Doublet_2/TRAJ_00012](Doublet_2/TRAJ_00012)
 3. [运行](#run)
 4. 修改参数
-   - 修改轨迹文件(`xyz`格式)路径为: `Singlet_*/TRAJ_*/output.xyz`
+   - 修改轨迹文件(`xyz`格式)路径为: `*let_*/TRAJ_*/output.xyz`
    - 修改 `template` 文件路径为: `MOLCAS.template`
