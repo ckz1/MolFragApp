@@ -8,16 +8,32 @@ MolFragApp is a project based on Python language that uses molecular structure f
 
 ## 使用效果
 
-设置参数:
+### 界面
 
-![](./parameter.png)
+![](images/overview.png)
+
+### 设置参数
+
+![](images/parameter.png)
 
 > - [键长](https://baike.baidu.hk/item/%E9%8D%B5%E9%95%B7/2442392)和~~原子数~~的设置需要考虑具体的体系和问题。
 > - 原子数的设置不合适，已删除。
 
-分析结果:
+### 分析结果
 
-![](./result.png)
+![](images/result.png)
+
+#### 片段划分
+
+![](images/frag_split.gif)
+
+#### 轨迹统计
+
+![](images/multitraj_stat.gif)
+
+#### 查看动画
+
+![](images/singletraj_geom_ene.gif)
 
 ## 使用方法
 
