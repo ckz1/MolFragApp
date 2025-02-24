@@ -33,7 +33,7 @@ extensions = [
     # "sphinx.ext.ifconfig",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
-    'sphinx_rtd_theme',
+    #'sphinx_rtd_theme',
 ]
 
 templates_path = ['_templates']
