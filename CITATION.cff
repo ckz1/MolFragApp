@@ -6,5 +6,6 @@ authors:
   orcid: "https://orcid.org/0000-0002-8980-8019"
 title: "MolFragApp"
 version: 1.0
+doi: 10.5281/zenodo.14916038
 date-released: 2024-12-20
 url: "https://github.com/ckz1/MolFragApp"

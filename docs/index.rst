@@ -14,13 +14,8 @@ MolFragApp documentation
    :target: https://img.shields.io/badge/python-3.9%2B-blue.svg
    :alt: Python version
 
-.. .. image:: https://img.shields.io/badge/doi-10.1021%2Facs.jcim.0c01307-blue.svg
-..    :target: https://doi.org/10.1021/acs.jcim.0c01307
-..    :alt: DOI   
-
-.. .. image:: https://img.shields.io/badge/zenodo-10.5281%2Fzenodo.3993667-blue.svg
-..    :target: https://doi.org/10.5281/zenodo.3993667
-..    :alt: Zenodo
+.. image:: https://zenodo.org/badge/855558429.svg
+  :target: https://doi.org/10.5281/zenodo.14916038
 
 
 MolFragApp is a Python-based project that uses molecular structure files in 'xyz' format for fragmentation analysis and trajectory visualization.
