@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MolFragApp module &mdash; MolFragApp 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MolFragApp
+              <img src="_static/MolFragApp_logo.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Demo</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">MolFragApp module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.XYZ"><code class="docutils literal notranslate"><span class="pre">XYZ</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.xyzfile"><code class="docutils literal notranslate"><span class="pre">XYZ.xyzfile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.num_atom"><code class="docutils literal notranslate"><span class="pre">XYZ.num_atom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.atom_list"><code class="docutils literal notranslate"><span class="pre">XYZ.atom_list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.coords"><code class="docutils literal notranslate"><span class="pre">XYZ.coords</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.frag"><code class="docutils literal notranslate"><span class="pre">XYZ.frag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.get_formula"><code class="docutils literal notranslate"><span class="pre">XYZ.get_formula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.get_frag"><code class="docutils literal notranslate"><span class="pre">XYZ.get_frag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#MolFragApp.XYZ.read_xyz"><code class="docutils literal notranslate"><span class="pre">XYZ.read_xyz()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.frag_analysis"><code class="docutils literal notranslate"><span class="pre">frag_analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.gen_chemical_formula"><code class="docutils literal notranslate"><span class="pre">gen_chemical_formula()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.get_delta_kin"><code class="docutils literal notranslate"><span class="pre">get_delta_kin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.parse_coord"><code class="docutils literal notranslate"><span class="pre">parse_coord()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.read_template"><code class="docutils literal notranslate"><span class="pre">read_template()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.read_xyz"><code class="docutils literal notranslate"><span class="pre">read_xyz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MolFragApp.show_mol"><code class="docutils literal notranslate"><span class="pre">show_mol()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MolFragApp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">MolFragApp module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/MolFragApp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-MolFragApp">
+<span id="molfragapp-module"></span><h1>MolFragApp module<a class="headerlink" href="#module-MolFragApp" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="MolFragApp.XYZ">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">XYZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyzfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#XYZ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.XYZ" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to represent an XYZ file and perform operations on it.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.xyzfile">
+<span class="sig-name descname"><span class="pre">xyzfile</span></span><a class="headerlink" href="#MolFragApp.XYZ.xyzfile" title="Link to this definition"></a></dt>
+<dd><p>The path to the xyz file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.num_atom">
+<span class="sig-name descname"><span class="pre">num_atom</span></span><a class="headerlink" href="#MolFragApp.XYZ.num_atom" title="Link to this definition"></a></dt>
+<dd><p>The number of atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.atom_list">
+<span class="sig-name descname"><span class="pre">atom_list</span></span><a class="headerlink" href="#MolFragApp.XYZ.atom_list" title="Link to this definition"></a></dt>
+<dd><p>A list of atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.coords">
+<span class="sig-name descname"><span class="pre">coords</span></span><a class="headerlink" href="#MolFragApp.XYZ.coords" title="Link to this definition"></a></dt>
+<dd><p>A numpy array of coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.frag">
+<span class="sig-name descname"><span class="pre">frag</span></span><a class="headerlink" href="#MolFragApp.XYZ.frag" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of fragments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.get_formula">
+<span class="sig-name descname"><span class="pre">get_formula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#XYZ.get_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.XYZ.get_formula" title="Link to this definition"></a></dt>
+<dd><p>Gets the chemical formula for each fragment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.get_frag">
+<span class="sig-name descname"><span class="pre">get_frag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bond_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_atom_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#XYZ.get_frag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.XYZ.get_frag" title="Link to this definition"></a></dt>
+<dd><p>Gets the fragments from the coordinates using DBSCAN clustering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame_idx</strong> (<em>int</em>) – The index of the frame to use.</p></li>
+<li><p><strong>max_bond_length</strong> (<em>float</em>) – The maximum bond length.</p></li>
+<li><p><strong>min_atom_num</strong> (<em>int</em>) – The minimum number of atoms in a fragment.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MolFragApp.XYZ.read_xyz">
+<span class="sig-name descname"><span class="pre">read_xyz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#XYZ.read_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.XYZ.read_xyz" title="Link to this definition"></a></dt>
+<dd><p>Reads the xyz file and sets the number of atoms, atom list, and coordinates.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.frag_analysis">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">frag_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bond_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_atom_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#frag_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.frag_analysis" title="Link to this definition"></a></dt>
+<dd><p>Analyzes the fragments in the xyz files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz_path</strong> (<em>str</em>) – The path to the xyz files.</p></li>
+<li><p><strong>max_bond_length</strong> (<em>float</em>) – The maximum bond length.</p></li>
+<li><p><strong>min_atom_num</strong> (<em>int</em>) – The minimum number of atoms in a fragment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the xyz files, steps, fragments, and delta kinetic energy.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.gen_chemical_formula">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">gen_chemical_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['H',</span> <span class="pre">'H',</span> <span class="pre">'O']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#gen_chemical_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.gen_chemical_formula" title="Link to this definition"></a></dt>
+<dd><p>Generates a chemical formula from a list of atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atom_list</strong> (<em>list</em>) – A list of atoms.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The chemical formula.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.get_delta_kin">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">get_delta_kin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lisfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#get_delta_kin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.get_delta_kin" title="Link to this definition"></a></dt>
+<dd><p>Calculates the change in kinetic energy from a lis file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lisfile</strong> (<em>str</em>) – The path to the lis file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The change in kinetic energy in eV.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.main">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.main" title="Link to this definition"></a></dt>
+<dd><p>The main function of the MolFragApp application.</p>
+<p>This function sets up the Streamlit page configuration, displays the title, and provides input fields for the user to specify file paths and parameters for molecular fragmentation analysis. It also displays the analysis results, including trajectory files, fragment types, and energy distributions.</p>
+<p>The function includes the following sections:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Page configuration and title.</p></li>
+<li><p>Input fields for trajectory file path and template file path.</p></li>
+<li><p>Input fields for maximum bond length and delta kinetic energy shift.</p></li>
+<li><p>Display of dissociation fragment analysis results.</p></li>
+<li><p>Data editor for sorting, searching, and selecting trajectories.</p></li>
+<li><p>Tabs for viewing trajectory statistics, animations, energy histograms, and other files.</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.parse_coord">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">parse_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_str_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#parse_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.parse_coord" title="Link to this definition"></a></dt>
+<dd><p>Parses a list of coordinate strings into a numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coord_str_list</strong> (<em>list</em>) – A list of coordinate strings.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array of coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.read_template">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">read_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MOLCAS.template'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'str'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#read_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.read_template" title="Link to this definition"></a></dt>
+<dd><p>Reads the template file and returns the template information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the template file.</p></li>
+<li><p><strong>output_type</strong> (<em>str</em>) – The type of output, either ‘str’ or ‘dict’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The template information in the specified output type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.read_xyz">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">read_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyzfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#read_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.read_xyz" title="Link to this definition"></a></dt>
+<dd><p>Reads an xyz file and returns the coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xyzfile</strong> (<em>str</em>) – The path to the xyz file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array of coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MolFragApp.show_mol">
+<span class="sig-prename descclassname"><span class="pre">MolFragApp.</span></span><span class="sig-name descname"><span class="pre">show_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyzfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MolFragApp.html#show_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MolFragApp.show_mol" title="Link to this definition"></a></dt>
+<dd><p>Displays the molecule and energy plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyzfile</strong> (<em>str</em>) – The path to the xyz file.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – The width of the viewer.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – The height of the viewer.</p></li>
+<li><p><strong>show_mol</strong> (<em>bool</em>) – Whether to show the molecule.</p></li>
+<li><p><strong>show_energy</strong> (<em>bool</em>) – Whether to show the energy plot.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Zoom: scroll the mouse pulley</p></li>
+<li><p>Rotate: drag the left mouse button</p></li>
+<li><p>Pan: drag the mouse pulley</p></li>
+</ul>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Chenkai Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
