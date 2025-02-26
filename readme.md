@@ -1,5 +1,11 @@
 # MolFragApp
 
+[![](https://zenodo.org/badge/855558429.svg)](https://doi.org/10.5281/zenodo.14916038)
+[![](https://img.shields.io/badge/documentation-blue.svg)](https://molfragapp.readthedocs.io/en/latest/)
+[![](https://img.shields.io/badge/python-3.9%2B-blue.svg)]()
+[![](https://img.shields.io/badge/license-MIT-blue.svg)]()
+
+
 ## Introduction
 
 MolFragApp is a Python-based project that uses molecular structure files in 'xyz' format for fragmentation analysis and trajectory visualization.
@@ -69,3 +75,23 @@ nohup streamlit run MolFragApp.py > MolFragApp.log 2>&1 &
 4. Modify parameters:
    - Change the trajectory file (`xyz` format) path to: `*let_*/TRAJ_*/output.xyz`
    - ~~Change the `template` file path to: `MOLCAS.template`~~
+
+## Cite
+
+### BibTeX
+
+```bibtex
+@software{Zhang_MolFragApp_2024,
+author = {Zhang, Chenkai},
+doi = {10.5281/zenodo.14916038},
+month = dec,
+title = {{MolFragApp}},
+url = {https://github.com/ckz1/MolFragApp},
+version = {1.0},
+year = {2024}
+}
+```
+
+### APA
+
+Zhang, C. (2024). MolFragApp (Version 1.0) [Computer software]. https://doi.org/10.5281/zenodo.14916038
