@@ -255,7 +255,7 @@ MolFragApp has been used in the following study:
 **Liu, D., Zhang, C., Hao, X., Xue, X., Gong, M., Zhang, S., ... & Yang, T. (2026).**
 _On-the-Fly Nonadiabatic Molecular Dynamics Reveals Dissociation Mechanisms of Multiply Charged Molecules._
 **Physical Review Letters, 136**(12), 123202.
-[DOI](https://doi.org/10.1103/c8yq-fzn5) | [Draft PDF](./asset/10.1103_c8yq-fzn5-draft.pdf)
+[DOI](https://doi.org/10.1103/c8yq-fzn5) | [Draft PDF](./asset/10.1103_c8yq-fzn5-draft.pdf) | [Dataset](https://zenodo.org/records/18831135)
 
 - **Dalitz Plots and Newton Diagrams**
 
