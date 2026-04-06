@@ -255,15 +255,15 @@ MolFragApp has been used in the following study:
 **Liu, D., Zhang, C., Hao, X., Xue, X., Gong, M., Zhang, S., ... & Yang, T. (2026).**
 _On-the-Fly Nonadiabatic Molecular Dynamics Reveals Dissociation Mechanisms of Multiply Charged Molecules._
 **Physical Review Letters, 136**(12), 123202.
-[DOI](https://doi.org/10.1103/c8yq-fzn5) | [Draft PDF](./asset/10.1103_c8yq-fzn5-draft.pdf) | [Dataset](https://zenodo.org/records/18831135)
+[DOI](https://doi.org/10.1103/c8yq-fzn5) | [Draft PDF](./assets/10.1103_c8yq-fzn5-draft.pdf) | [Dataset](https://zenodo.org/records/18831135)
 
 - **Dalitz Plots and Newton Diagrams**
 
-![Dalitz plots and Newton diagrams](./asset/10.1103_c8yq-fzn5-Fig3.png)
+![Dalitz plots and Newton diagrams](./assets/10.1103_c8yq-fzn5-Fig3.png)
 
 - **Time Evolution of Bond Lengths and Bond Angle**
 
-![Time evolution of bond lengths and bond angle](./asset/10.1103_c8yq-fzn5-Fig4.png)
+![Time evolution of bond lengths and bond angle](./assets/10.1103_c8yq-fzn5-Fig4.png)
 
 > This example illustrates the relevance of MolFragApp in fragmentation dynamics analysis and in presenting trajectory-derived results in a publication context.
 
