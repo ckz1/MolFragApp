@@ -303,7 +303,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from matplotlib.colors import LinearSegmentedColormap, LogNorm
-
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 h = 1.0
 """float: 等边三角形的高
@@ -3564,7 +3564,16 @@ def dalitzplot(
     fig, ax = plt.subplots(figsize=(4, 4), dpi=300)
     # # 绘制密度图以及colorbar
     density = ax.scatter(x, y, c=z, s=5, cmap=cmap)
-    fig.colorbar(density, pad=0, location=location)
+    # fig.colorbar(density, pad=0, location=location)
+    # 弃用 location 参数, 设置 colorbar 位于 density 右侧且同高度
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes(
+    "right",    # 放在右侧
+    size="5%",  # colorbar 宽度，相对于 ax 宽度
+    pad=0.02    # 与 ax 的间距
+    )
+    fig.colorbar(density, cax=cax)
+	
     # ax.plot(x,y,'b.')
 
     # 画出Dalitz Plot的边缘
@@ -3708,7 +3717,16 @@ def newtonplot(
     fig, ax = plt.subplots(figsize=(4, 4), dpi=300)
     density = plt.scatter(x, y, c=z, s=5, cmap="jet")
     # density = plt.scatter(x, y, c=z, s=5, cmap='mycmap')
-    fig.colorbar(density, pad=0, location=location)
+    # fig.colorbar(density, pad=0, location=location)
+    # 弃用 location 参数, 设置 colorbar 位于 density 右侧且同高度
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes(
+    "right",    # 放在右侧
+    size="5%",  # colorbar 宽度，相对于 ax 宽度
+    pad=0.02    # 与 ax 的间距
+    )
+    fig.colorbar(density, cax=cax)
+	
     ax.arrow(0, 0, 1, 0, color="k", width=0.01, head_length=0.1)
     ax.text(1, 0.1, r"$%s$" % frag_name[0], fontsize=15, va="bottom")
     ax.text(0, 1, r"$%s$" % frag_name[1], fontsize=15)
